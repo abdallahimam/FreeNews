@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $count = $stmt->rowCount();
         
             if ($count > 0) {
-                $_SESSION['error'] = 'Error: please check you onformation again!.';
+                $_SESSION['error'] = 'Error: please check you information again!.';
                 echo 'Error 1';
                 /*header('Location: /FreeNews');
                 exit();*/

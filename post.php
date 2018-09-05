@@ -10,8 +10,13 @@ include('init.php');
 $allPosts = getAllPosts('DESC');
 $allComments = getAllComments('DESC');
 $allCategories = getAllCategories();
-//$post = getLatestPosts('*', 'post', 'post_date', $count = 1);
-//$allCommentsForPost = getAllCommentsForPost('ASC' , $post[0]['post_id']);
+$postID = isset($_GET['postid']) ? $_GET['postid'] : null;
+if ($postID == null) {
+    header('Location: /FreeNews');
+    exit();
+}
+$targetPost = getPostById($postID);
+$allCommentsForPost = getAllCommentsForPost('ASC' , $targetPost['post_id']);
 ?>
     <div class="home">
         <div class="container-fluid">
@@ -55,23 +60,22 @@ $allCategories = getAllCategories();
                     </div>
                 </div>
                 <div class="col-lg-6 p-0">
-                <?php foreach ($allPosts as $post) { ?>
                     <div class="middle mt-3 p-3 bg-light rounded">
-                        <h3 class="mt-4 mb-3"><?php echo $post['post_title'];?></h3>
-                        <p class="lead">by <a href="profile.php?id=<?php echo $post['comment_post_id'];?>"><?php echo $post['post_user_full_name'];?></a></p>
+                        <h3 class="mt-4 mb-3"><?php echo $targetPost['post_title'];?></h3>
+                        <p class="lead">by <a href="profile.php?id=<?php echo $targetPost['comment_post_id'];?>"><?php echo $targetPost['user_full_name'];?></a></p>
                         <hr />
                         <p>
                             <span>Posted on</span>
                             <span>
                                 <?php
-                                    $date = date('d, F, Y', strtotime($post['post_date']));
+                                    $date = date('d, F, Y', strtotime($targetPost['post_date']));
                                     echo $date;
                                 ?>
                             </span>
                             <span>at</span>
                             <span>
                                 <?php
-                                    $time = date('h:i a', strtotime($post['post_time']));
+                                    $time = date('h:i a', strtotime($targetPost['post_time']));
                                     echo $time;
                                 ?>
                             </span>
@@ -79,13 +83,13 @@ $allCategories = getAllCategories();
                         <hr>
                         <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="image for post">
                         <hr>
-                        <p class="lead p-2 text-justify"><?php echo $post['post_content'];?><p>
+                        <p class="lead p-2 text-justify"><?php echo $targetPost['post_content'];?><p>
                         <hr>
                         <?php if (isset($_SESSION['username'])) { ?>
                             <div class="card my-4">
                                 <h5 class="card-header">Leave a Comment:</h5>
                                 <div class="card-body">
-                                    <form action="post.php?action=AddComment&postid=<?php echo $post['post_id'];?>" method="POST">
+                                    <form action="post.php?action=AddComment&postid=<?php echo $targetPost['post_id'];?>" method="POST">
                                         <div class="form-group">
                                             <textarea name="comment" class="form-control" rows="3"></textarea>
                                         </div>
@@ -102,13 +106,11 @@ $allCategories = getAllCategories();
                         <?php } ?>
                         
                         <!-- Single Comment -->
-                        <?php
-                            $allCommentsForPost = getAllCommentsForPost('ASC' , $post['post_id']);
-                            foreach($allCommentsForPost as $comment) { ?>
+                        <?php foreach($allCommentsForPost as $comment) { ?>
                         <div class="media mb-4 single">
                             <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                             <div class="media-body">
-                                <h5 class="mt-0 <?php echo $comment['comment_user_id'] == $post['post_user_id'] && isset($_SESSION['userid']) && $_SESSION['userid'] == $post['post_user_id'] ? 'my-comment' : '' ;?>"><?php echo $comment['user_full_name'];?></h5>
+                                <h5 class="mt-0 <?php echo $comment['comment_user_id'] == $targetPost['post_user_id'] && isset($_SESSION['userid']) && $_SESSION['userid'] == $targetPost['post_user_id'] ? 'my-comment' : '' ;?>"><?php echo $comment['user_full_name'];?></h5>
                                 <form action="post.php?action=UpdateComment" method="POST">
                                     <div class="form-group">
                                         <input type="hidden" name="commentid" value="<?php echo $comment['comment_id'];?>"/>
@@ -124,7 +126,6 @@ $allCategories = getAllCategories();
                         </div>
                     <?php } ?>
                     </div>
-                <?php } ?>
                 </div>
                 <div class="col-lg-3">
                     <div class="right-bar">

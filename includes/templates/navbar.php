@@ -55,7 +55,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['role']) && $_SESSION['role'
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="home.php"><?php echo lang('HOME');?></a>
+                            <a class="nav-link" href="/FreeNews"><?php echo lang('HOME');?></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.php"><?php echo lang('ABOUT');?></a>
@@ -81,14 +81,14 @@ if (isset($_SESSION['username']) && isset($_SESSION['role']) && $_SESSION['role'
 <?php } else { ?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="index.php">Free News</a>
+                <a class="navbar-brand" href="/FreeNews">Free News</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="home.php"><?php echo lang('HOME');?></a>
+                            <a class="nav-link" href="/FreeNews"><?php echo lang('HOME');?></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.php"><?php echo lang('ABOUT');?></a>
